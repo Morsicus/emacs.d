@@ -155,16 +155,22 @@
     "f"  '(:ignore t :which-key "files")
     "ff" '(counsel-find-file :which-key "find")
 
+    "l"  '(:ignore t :which-key "lsp")
+    
+    "g"  '(:ignore t :which-key "go")
+    "gd" '(lsp-find-definition :which-key "definition")
+    "gr" '(lsp-ui-peek-find-references :which-key "references")
+
+    "o"  '(:ignore t :which-key "org")
+    "oa"  '(org-roam-alias-add :which-key "roam-alias")
+    "ol"  '(org-roam-buffer-toggle :which-key "roam-list")
+    "of"  '(org-roam-node-find :which-key "roam-find")
+    "oi"  '(org-roam-node-insert :which-key "roam-insert")
+    
     "s"  '(swiper-isearch :which-key "search")
 
     "x"  '(counsel-M-x :which-key "exec")
     "z"  '(hydra-text-scale/body :which-key "zoom")))
-
-;; Autocompletion
-(use-package company
-  :diminish company-mode
-  :config
-  (global-company-mode))
 
 ;; Magit
 (use-package magit)
@@ -176,3 +182,55 @@
     (mapc 'kill-buffer 
           (delq (current-buffer) 
                 (remove-if-not 'buffer-file-name (buffer-list)))))
+
+;; LSP
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :hook ((python-mode go-mode) . lsp-deferred)
+  :demand t
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :config
+  (setq lsp-auto-configure t)
+  (lsp-enable-which-key-integration t))
+
+(use-package lsp-ui
+  :config
+  (setq lsp-ui-flycheck-enable t)
+  (add-to-list 'lsp-ui-doc-frame-parameters '(no-accept-focus . t))
+  (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references))
+
+(use-package lsp-ivy)
+
+;; Autocompletion
+(use-package company
+  :after lsp-mode
+  :hook (lsp-mode . company-mode)
+  :bind (:map company-active-map
+         ("<tab>" . company-complete-selection))
+        (:map lsp-mode-map
+         ("<tab>" . company-indent-or-complete-common))
+  :custom
+  (company-minimum-prefix-length 1)
+  (company-idle-delay 0.0))
+
+(use-package company-box
+  :hook (company-mode . company-box-mode))
+
+;; Java
+(use-package lsp-java
+  :config (add-hook 'java-mode-hook 'lsp))
+
+(use-package go-mode
+  :config (add-hook 'go-mode-hook 'lsp-deferred))
+
+(use-package terraform-mode
+  :config (add-hook 'terraform-mode-hook 'lsp-deferred))
+
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory "~/Documents/Org/Roam")
+  :config
+  (org-roam-setup))
