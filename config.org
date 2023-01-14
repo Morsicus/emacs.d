@@ -371,3 +371,13 @@ The following piece of code comes from [[https://gist.github.com/daniel-koudouna
     (interactive)
     (morsicus/insert-after 'org-roam-node-insert))
 #+END_SRC
+
+** [[https://github.com/org-roam/org-roam-ui][org-roam-ui]]
+#+BEGIN_SRC emacs-lisp
+  (use-package org-roam-ui
+    :after org-roam
+    :general
+    (morsicus/leader-keys
+      "o"  '(:ignore t :which-key "org")
+      "og" '(org-roam-ui-open :which-key "roam-graph")))
+#+END_SRC
