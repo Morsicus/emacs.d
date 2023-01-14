@@ -1,0 +1,8 @@
+#+TITLE: README
+#+AUTHOR: Mickael Fortunato
+* README
+This is the repository containing my Emacs Configuration File.
+
+I try to follow the paradigm of [[https://en.wikipedia.org/wiki/Literate_programming][Literate Programing]] in order to make my Emacs configuration as much as possible self-explanatory.
+
+The configuration start [[file:config.el][here]].
