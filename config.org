@@ -265,12 +265,54 @@ I use it a lot to mimic the shortcut of [[https://github.com/syl20bnr/spacemacs]
     :general
     (morsicus/leader-keys
       "o"  '(:ignore t :which-key "org")
-      "oa"  '(org-roam-alias-add :which-key "roam-alias")
-      "ol"  '(org-roam-buffer-toggle :which-key "roam-list")
-      "of"  '(org-roam-node-find :which-key "roam-find")
-      "oi"  '(morsicus/org-roam-node-insert :which-key "roam-insert"))
+      "oa" '(org-roam-alias-add :which-key "roam-alias")
+      "od" '(morsicus/hydra-org-roam-capture-daily/body :which-key "capture-daily")
+      "oj" '(morsicus/hydra-org-roam-journal/body :which-key "roam-journal")
+      "oc" '(org-roam-capture :which-key "capture")
+      "oo" '(org-open-at-point :which-key "open")
+      "ol" '(org-roam-buffer-toggle :which-key "roam-list")
+      "of" '(org-roam-node-find :which-key "roam-find")
+      "oi" '(morsicus/org-roam-node-insert :which-key "roam-insert"))
     :config
+    (require 'org-roam-dailies)
     (org-roam-setup))
+#+END_SRC
+*** Custom Hydra functions
+**** Interactive menu to capture in daily entries
+#+BEGIN_SRC emacs-lisp
+  (require 'hydra)
+  (defhydra morsicus/hydra-org-roam-capture-daily ()
+    "
+    Choose a Journal entry to capture in:
+    _t_ Today
+    _T_ Tomorrow
+    _y_ Yesterday
+
+    _q_ Do Nothing
+    "
+    ("q" nil)
+    ("t" org-roam-dailies-capture-today)
+    ("T" org-roam-dailies-capture-tomorrow)
+    ("y" org-roam-dailies-capture-yesterday))
+#+END_SRC
+**** Interactive menu to quickly get a daily node
+#+BEGIN_SRC emacs-lisp
+  (require 'hydra)
+  (defhydra morsicus/hydra-org-roam-journal ()
+    "
+    Choose a Journal entry to get:
+    _t_ Today
+    _T_ Tomorrow
+    _y_ Yesterday
+    _a_ Agenda (Choose a date)
+
+    _q_ Do Nothing
+    "
+    ("q" nil)
+    ("t" org-roam-dailies-goto-today)
+    ("T" org-roam-dailies-goto-tomorrow)
+    ("y" org-roam-dailies-goto-yesterday)
+    ("a" org-roam-dailies-goto-date))
 #+END_SRC
 *** Custom function to fix the org-roam-node-insert in Evil mode
 When using org-roam-node-insert function provided by org-roam with Evil in Normal mode I cannot smoothly create a new node in the current note.
@@ -278,7 +320,7 @@ The link to the node in added before the cursor. Which is annoying.
 
 The following piece of code comes from [[https://gist.github.com/daniel-koudouna/39f03845914e34acde4d4c6a27c5176a][Gist]].
 #+BEGIN_SRC emacs-lisp
-  (defun morsicus:is-end-of-line ()
+  (defun morsicus/is-end-of-line ()
     "Compare point with end of line."
     (let* ((pos (current-column))
 	   (end-pos (save-excursion
@@ -286,7 +328,7 @@ The following piece of code comes from [[https://gist.github.com/daniel-koudouna
 		      (current-column))))
       (eq pos end-pos)))
 
-  (defun morsicus:compare-with-end-of-word ()
+  (defun morsicus/compare-with-end-of-word ()
     "Compare point with end of word."
     (let* ((pos (current-column))
 	   (end-pos (save-excursion
@@ -295,30 +337,30 @@ The following piece of code comes from [[https://gist.github.com/daniel-koudouna
 		      (current-column))))
       (- pos end-pos)))
 
-  (defun morsicus:point-is-space ()
+  (defun morsicus/point-is-space ()
     "Check if point is whitespace."
     (char-equal ?\s (char-after)))
 
-  (defun morsicus:insert-after (func)
+  (defun morsicus/insert-after (func)
     "Run FUNC after the end of word, ignoring whitespace."
     (interactive)
-    (let ((relative-loc (morsicus:compare-with-end-of-word)))
-      (cond ((morsicus:is-end-of-line)
+    (let ((relative-loc (morsicus/compare-with-end-of-word)))
+      (cond ((morsicus/is-end-of-line)
 	     (end-of-line)
 	     (call-interactively func))
 	    ((eq 0 relative-loc)
 	     (evil-forward-char)
 	     (call-interactively func))
-	    ((and (> 0 relative-loc) (not (morsicus:point-is-space)))
+	    ((and (> 0 relative-loc) (not (morsicus/point-is-space)))
 	     (evil-forward-word-end)
-	     (if (morsicus:is-end-of-line)
+	     (if (morsicus/is-end-of-line)
 		 (end-of-line)
 	       (evil-forward-char))
 	     (call-interactively func))
 	    (t
 	     (call-interactively func)))))
-  (defun morsicus:org-roam-node-insert ()
+  (defun morsicus/org-roam-node-insert ()
     "Custom org-roam-node-insert to ensure that the link appears after the cursor."
     (interactive)
-    (morsicus:insert-after 'org-roam-node-insert))
+    (morsicus/insert-after 'org-roam-node-insert))
 #+END_SRC
