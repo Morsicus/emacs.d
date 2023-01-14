@@ -181,10 +181,6 @@ I use it a lot to mimic the shortcut of [[https://github.com/syl20bnr/spacemacs]
 
       "/"  '(swiper-isearch :which-key "search")
 
-      "w"  '(:ignore t :which-key "write")
-      "ww" '(save-buffer :which-key "write-buffer")
-      "wq" '(save-buffers-kill-emacs :which-key "write-quit")
-
       "x"  '(:ignore t :which-key "exec")
       "xx" '(counsel-M-x :which-key "M-x")
       "xe" '(eval-last-sexp :which-key "eval-last-sexp")
@@ -192,16 +188,27 @@ I use it a lot to mimic the shortcut of [[https://github.com/syl20bnr/spacemacs]
 #+END_SRC
 *** TODO Split the general configuration into mutliple pieces
 * Buffers and Windows
+** Buffers
 #+BEGIN_SRC emacs-lisp
-  ;; Ease the process to move across windows
-  ;; Use <shift+Arrow>
-  (windmove-default-keybindings)
   (defun kill-other-buffers ()
     "Kill all other buffers."
     (interactive)
     (mapc 'kill-buffer 
 	  (delq (current-buffer) 
 		(remove-if-not 'buffer-file-name (buffer-list)))))
+#+END_SRC
+** Windows/Splits
+#+BEGIN_SRC emacs-lisp
+  ;; Ease the process to move across windows
+  ;; Use <shift+Arrow>
+  (windmove-default-keybindings)
+  (require 'general)
+  (morsicus/leader-keys
+    "w"  '(:ignore t :which-key "windows")
+    "w/" '(split-window-vertically :which-key "vsplit")
+    "w-" '(split-window-horizontally :which-key "split")
+    "wd" '(delete-window :which-key "delete")
+    "wD" '(delete-other-windows :which-key "delete"))
 #+END_SRC
 * Development
 ** Basis
