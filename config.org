@@ -101,14 +101,19 @@
     :hook (prog-mode . rainbow-delimiters-mode))
 #+END_SRC
 * Shortcuts
-** TODO Split the general configuration into mutliple pieces
+** [[https://github.com/justbur/emacs-which-key][Which-key]]
+Which-key is a Emacs Minor mode that I particularly like. It displays the key bindings based on the current key that you pressed.
+When you start to have multiple shortcut it becomes very handy.
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
     :init (which-key-mode)
     :diminish which-key-mode
     :config
     (setq which-key-idle-delay 0.3))
-
+#+END_SRC
+** [[https://github.com/emacs-evil/evil][Evil]]
+As a former heavy Vim/Neovim user, I cannot live without Vim like keybindings... Or at least I don't want to try.
+#+BEGIN_SRC emacs-lisp
   (use-package evil
     :init
     (setq evil-want-integration t)
@@ -122,12 +127,19 @@
 
     (evil-set-initial-state 'messages-buffer-mode 'normal)
     (evil-set-initial-state 'dashboard-mode 'normal))
-
+#+END_SRC
+** [[https://github.com/emacs-evil/evil][Evil-collection]]
+It's a collection of evil (Vim) keybindings that try to cover some blindspots of the original evil-mode.
+#+BEGIN_SRC emacs-lisp
   (use-package evil-collection
     :after evil
     :config
     (evil-collection-init))
-
+#+END_SRC
+** [[https://github.com/abo-abo/hydra][Hydra]]
+Hydra is package helping to repeat an action without retyping a shortcut.
+The good example is when you are doing a prensentation on Emacs and you want to zoom-in in order to make the text readable for everyone.
+#+BEGIN_SRC emacs-lisp
   (use-package hydra)
 
   (defhydra hydra-text-scale (:timeout 5)
@@ -135,7 +147,11 @@
     ("+" text-scale-increase "in")
     ("-" text-scale-decrease "out")
     ("k" nil "finished" :exit t))
-
+#+END_SRC
+** [[https://github.com/noctuid/general.el][General]]
+It's a package that ease the process of keybinding. Especially for Evil user.
+I use it a lot to mimic the shortcut of [[https://github.com/syl20bnr/spacemacs][Spacemacs]] and other "Space-based" shortcut distibutions
+#+BEGIN_SRC emacs-lisp
   (use-package general
     :config
     (general-create-definer morsicus/leader-keys
@@ -180,6 +196,7 @@
       "xe" '(eval-last-sexp :which-key "eval-last-sexp")
       "z"  '(hydra-text-scale/body :which-key "zoom")))
 #+END_SRC
+*** TODO Split the general configuration into mutliple pieces
 * Buffers and Windows
 #+BEGIN_SRC emacs-lisp
   ;; Ease the process to move across windows
@@ -245,6 +262,7 @@
     :config (add-hook 'terraform-mode-hook 'lsp-deferred))
 #+END_SRC
 * Org-Mode and Note Taking
+** org-roam
 #+BEGIN_SRC emacs-lisp
   (use-package org-roam
     :ensure t
@@ -253,3 +271,4 @@
     :config
     (org-roam-setup))
 #+END_SRC
+
