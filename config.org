@@ -101,6 +101,7 @@
     :hook (prog-mode . rainbow-delimiters-mode))
 #+END_SRC
 * Shortcuts
+** TODO Split the general configuration into mutliple pieces
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
     :init (which-key-mode)
@@ -147,7 +148,7 @@
       "ag" '(magit-status :which-key "git")
 
       "b"  '(:ignore t :which-key "buffers")
-      "bb" '(ibuffer :which-key "list")
+      "bb" '(switch-to-buffer :which-key "list")
       "bd" '(kill-buffer :which-key "kill")
       "bD" '(kill-other-buffers :which-key "kill-others")
       "bn" '(next-buffer :which-key "next")
@@ -168,13 +169,15 @@
       "of"  '(org-roam-node-find :which-key "roam-find")
       "oi"  '(org-roam-node-insert :which-key "roam-insert")
 
-      "s"  '(swiper-isearch :which-key "search")
+      "/"  '(swiper-isearch :which-key "search")
 
       "w"  '(:ignore t :which-key "write")
       "ww" '(save-buffer :which-key "write-buffer")
-      "wq" '(save-buffers-kill-emacs :which-key "write-buffer")
+      "wq" '(save-buffers-kill-emacs :which-key "write-quit")
 
-      "x"  '(counsel-M-x :which-key "exec")
+      "x"  '(:ignore t :which-key "exec")
+      "xx" '(counsel-M-x :which-key "M-x")
+      "xe" '(eval-last-sexp :which-key "eval-last-sexp")
       "z"  '(hydra-text-scale/body :which-key "zoom")))
 #+END_SRC
 * Buffers and Windows
