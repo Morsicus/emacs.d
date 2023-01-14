@@ -179,12 +179,6 @@ I use it a lot to mimic the shortcut of [[https://github.com/syl20bnr/spacemacs]
       "gd" '(lsp-find-definition :which-key "definition")
       "gr" '(lsp-ui-peek-find-references :which-key "references")
 
-      "o"  '(:ignore t :which-key "org")
-      "oa"  '(org-roam-alias-add :which-key "roam-alias")
-      "ol"  '(org-roam-buffer-toggle :which-key "roam-list")
-      "of"  '(org-roam-node-find :which-key "roam-find")
-      "oi"  '(morsicus/org-roam-node-insert :which-key "roam-insert")
-
       "/"  '(swiper-isearch :which-key "search")
 
       "w"  '(:ignore t :which-key "write")
@@ -268,6 +262,13 @@ I use it a lot to mimic the shortcut of [[https://github.com/syl20bnr/spacemacs]
     :ensure t
     :custom
     (org-roam-directory "~/Documents/Org/Roam")
+    :general
+    (morsicus/leader-keys
+      "o"  '(:ignore t :which-key "org")
+      "oa"  '(org-roam-alias-add :which-key "roam-alias")
+      "ol"  '(org-roam-buffer-toggle :which-key "roam-list")
+      "of"  '(org-roam-node-find :which-key "roam-find")
+      "oi"  '(morsicus/org-roam-node-insert :which-key "roam-insert"))
     :config
     (org-roam-setup))
 #+END_SRC
