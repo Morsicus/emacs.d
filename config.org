@@ -59,6 +59,20 @@
   (use-package ivy-rich
     :init (ivy-rich-mode 1))
 #+END_SRC
+* Snippets
+I like to use Snippets to avoid typing repeated piece of code.
+
+However, I do not like too much to take a full collection of snippets created by someone else.
+You end up with most of the snippet not used.
+
+However, the collection like [[https://github.com/AndreaCrotti/yasnippet-snippets/][Github/AndreaCrotti/yasnippets-snippets]] can be a good source of inspiration.
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :config
+    (yas-reload-all)
+    (add-to-list 'yas-snippet-dirs "~/.config/emacs/snippets")
+    (yas-global-mode 1))
+#+END_SRC
 
 * Theme & Fanciness
 #+BEGIN_SRC emacs-lisp
@@ -166,7 +180,7 @@ I use it a lot to mimic the shortcut of [[https://github.com/syl20bnr/spacemacs]
       "b"  '(:ignore t :which-key "buffers")
       "bb" '(switch-to-buffer :which-key "list")
       "bd" '(kill-buffer :which-key "kill")
-      "bD" '(kill-other-buffers :which-key "kill-others")
+      "bD" '(morsicus/kill-other-buffers :which-key "kill-others")
       "bn" '(next-buffer :which-key "next")
       "bp" '(previous-buffer :which-key "previous")
 
@@ -190,12 +204,10 @@ I use it a lot to mimic the shortcut of [[https://github.com/syl20bnr/spacemacs]
 * Buffers and Windows
 ** Buffers
 #+BEGIN_SRC emacs-lisp
-  (defun kill-other-buffers ()
+  (defun morsicus/kill-other-buffers ()
     "Kill all other buffers."
     (interactive)
-    (mapc 'kill-buffer 
-	  (delq (current-buffer) 
-		(remove-if-not 'buffer-file-name (buffer-list)))))
+    (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
 #+END_SRC
 ** Windows/Splits
 #+BEGIN_SRC emacs-lisp
