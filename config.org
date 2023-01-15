@@ -275,7 +275,18 @@ I use it a lot to mimic the shortcut of [[https://github.com/syl20bnr/spacemacs]
     :config (add-hook 'terraform-mode-hook 'lsp-deferred))
 #+END_SRC
 * Org-Mode and Note Taking
-** org-roam
+I'm used to take notes into [[https://obsidian.md/][Obsidian]] and [[https://logseq.com/][Logseq]] and other alternatives.
+Moving to org-mode is a way to bring everything (ie. Notes, Code, Mails, ...) in the same tool to avoid as much as possible swithing context.
+
+Wy workflow is heavily inspired by the [[https://en.wikipedia.org/wiki/Zettelkasten][Zettelkasten Method]].
+
+If we try to sum-up quickly, what I want to achieve with org-mode are the following goals:
+- Get into Emacs everything that I read/highlight from my different devices (ie. I spend a big part of my time reading on my phone/tablette/Kindle)
+- Being able to create without any friction new notes. Everytime that I have a thought.
+- Link my notes together and discover new connected nodes in a Graph View like
+- Being able to export and publish some notes in HTML, for example
+- Managing my tasks and calendar in Emacs would be an amazing plus. Especially because I feel more productive when I'm able to plan and time-lock my day of work.
+** [[https://www.orgroam.com/][org-roam]]
 #+BEGIN_SRC emacs-lisp
   (use-package org-roam
     :ensure t
