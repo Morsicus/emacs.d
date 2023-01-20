@@ -404,3 +404,10 @@ The following piece of code comes from [[https://gist.github.com/daniel-koudouna
       "o"  '(:ignore t :which-key "org")
       "og" '(org-roam-ui-open :which-key "roam-graph")))
 #+END_SRC
+
+** [[https://github.com/minad/org-modern][org-modern]]
+#+BEGIN_SRC emacs-lisp
+  (use-package org-modern
+    :config
+    (global-org-modern-mode t))
+#+END_SRC
