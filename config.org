@@ -286,6 +286,14 @@ If we try to sum-up quickly, what I want to achieve with org-mode are the follow
 - Link my notes together and discover new connected nodes in a Graph View like
 - Being able to export and publish some notes in HTML, for example
 - Managing my tasks and calendar in Emacs would be an amazing plus. Especially because I feel more productive when I'm able to plan and time-lock my day of work.
+** org-mode
+#+BEGIN_SRC emacs-lisp
+  (use-package org
+    :config
+    (setq org-agenda-files
+	  '("~/Documents/Org/Roam/daily"))
+    (setq org-log-done 'time))
+#+END_SRC
 ** [[https://www.orgroam.com/][org-roam]]
 #+BEGIN_SRC emacs-lisp
   (use-package org-roam
@@ -294,15 +302,19 @@ If we try to sum-up quickly, what I want to achieve with org-mode are the follow
     (org-roam-directory "~/Documents/Org/Roam")
     :general
     (morsicus/leader-keys
-      "o"  '(:ignore t :which-key "org")
-      "oa" '(org-roam-alias-add :which-key "roam-alias")
-      "od" '(morsicus/hydra-org-roam-capture-daily/body :which-key "capture-daily")
-      "oj" '(morsicus/hydra-org-roam-journal/body :which-key "roam-journal")
-      "oc" '(org-roam-capture :which-key "capture")
-      "oo" '(org-open-at-point :which-key "open")
-      "ol" '(org-roam-buffer-toggle :which-key "roam-list")
-      "of" '(org-roam-node-find :which-key "roam-find")
-      "oi" '(morsicus/org-roam-node-insert :which-key "roam-insert"))
+      "o"   '(:ignore t :which-key "org")
+      "ot"  '(:ignore t :which-key "org-task")
+      "otd" '(org-deadline :which-key "org-deadline")
+      "ots" '(org-schedule :which-key "org-schedule")
+      "otl" '(org-todo-list :which-key "org-todo-list")
+      "oa"  '(org-roam-alias-add :which-key "roam-alias")
+      "od"  '(morsicus/hydra-org-roam-capture-daily/body :which-key "capture-daily")
+      "oj"  '(morsicus/hydra-org-roam-journal/body :which-key "roam-journal")
+      "oc"  '(org-roam-capture :which-key "capture")
+      "oo"  '(org-open-at-point :which-key "open")
+      "ol"  '(org-roam-buffer-toggle :which-key "roam-list")
+      "of"  '(org-roam-node-find :which-key "roam-find")
+      "oi"  '(morsicus/org-roam-node-insert :which-key "roam-insert"))
     :config
     (require 'org-roam-dailies)
     (org-roam-setup))
