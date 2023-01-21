@@ -5,4 +5,4 @@ This is the repository containing my Emacs Configuration File.
 
 I try to follow the paradigm of [[https://en.wikipedia.org/wiki/Literate_programming][Literate Programing]] in order to make my Emacs configuration as much as possible self-explanatory.
 
-The configuration start [[file:config.org][here]].
+The configuration starts [[file:config.org][here]].

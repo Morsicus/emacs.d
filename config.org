@@ -143,7 +143,6 @@ I use it a lot to mimic the shortcut of [[https://github.com/syl20bnr/spacemacs]
       "xe" '(eval-last-sexp :which-key "eval-last-sexp")
       "z"  '(hydra-text-scale/body :which-key "zoom")))
 #+END_SRC
-*** TODO Split the general configuration into mutliple pieces
 * Completion
 ** vertico
 #+BEGIN_SRC emacs-lisp
