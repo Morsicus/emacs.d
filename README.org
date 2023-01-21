@@ -5,4 +5,13 @@ This is the repository containing my Emacs Configuration File.
 
 I try to follow the paradigm of [[https://en.wikipedia.org/wiki/Literate_programming][Literate Programing]] in order to make my Emacs configuration as much as possible self-explanatory.
 
-The configuration starts [[file:config.org][here]].
+The configuration itself starts [[file:config.org][here]].
+
+* Minimal ~/.emacs
+In order to load the configuration with org-babel, I need this minimal ~/.emacs
+#+BEGIN_SRC emacs-lisp
+  ; This is a Hack to force Emacs to use the version of org-mode that I manage with straight.el
+  (add-to-list 'load-path "~/.emacs.d/straight/repos/org/lisp")
+
+  (org-babel-load-file "~/.config/emacs/config.org")
+#+END_SRC
