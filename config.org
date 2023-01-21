@@ -58,142 +58,6 @@ Straight.el is a purely functional package manager.
     (load bootstrap-file nil 'nomessage))
   (setq package-enable-at-startup nil)
 #+END_SRC
-* Completion
-** vertico
-#+BEGIN_SRC emacs-lisp
-  (use-package vertico
-    :straight t
-    :init
-    (vertico-mode))
-#+END_SRC
-** [[https://github.com/oantolin/orderless][orderless package]]
-#+BEGIN_SRC emacs-lisp
-  (use-package orderless
-    :straight t
-    :ensure t
-    :custom
-    (completion-styles '(orderless basic))
-    (completion-category-overrides '((file (styles basic partial-completion)))))
-#+END_SRC
-** [[https://github.com/minad/marginalia][marginalia]]
-Add some annotations/notes in the minibuffer completion
-#+BEGIN_SRC emacs-lisp
-  (use-package marginalia
-    :straight t
-    ;; Either bind `marginalia-cycle' globally or only in the minibuffer
-    :bind (("M-A" . marginalia-cycle)
-	   :map minibuffer-local-map
-	   ("M-A" . marginalia-cycle))
-    :init
-    (marginalia-mode))
-#+END_SRC
-** [[https://github.com/minad/consult/][consult.el]]
-#+BEGIN_SRC emacs-lisp
-  (use-package consult
-    :straight t
-    :bind (;; C-c bindings (mode-specific-map)
-	   ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
-	   ;; Other custom bindings
-	   ("M-y" . consult-yank-pop))
-
-    ;; Enable automatic preview at point in the *Completions* buffer. This is
-    ;; relevant when you use the default completion UI.
-    :hook (completion-list-mode . consult-preview-at-point-mode)
-
-    ;; The :init configuration is always executed (Not lazy)
-    :init
-    ;; Optionally configure the register formatting. This improves the register
-    ;; preview for `consult-register', `consult-register-load',
-    ;; `consult-register-store' and the Emacs built-ins.
-    (setq register-preview-delay 0.5
-	  register-preview-function #'consult-register-format)
-
-    ;; Optionally tweak the register preview window.
-    ;; This adds thin lines, sorting and hides the mode line of the window.
-    (advice-add #'register-preview :override #'consult-register-window)
-
-    ;; Use Consult to select xref locations with preview
-    (setq xref-show-xrefs-function #'consult-xref
-	  xref-show-definitions-function #'consult-xref)
-
-    ;; Configure other variables and modes in the :config section,
-    ;; after lazily loading the package.
-    :config
-    (consult-customize
-     consult-theme :preview-key '(:debounce 0.2 any)
-     consult-ripgrep consult-git-grep consult-grep
-     consult-bookmark consult-recent-file consult-xref
-     consult--source-bookmark consult--source-file-register
-     consult--source-recent-file consult--source-project-recent-file
-     ;; :preview-key (kbd "M-.")
-     :preview-key '(:debounce 0.4 any))
-
-    ;; Optionally configure the narrowing key.
-    ;; Both < and C-+ work reasonably well.
-    (setq consult-narrow-key "<"))
-#+END_SRC
-* Snippets
-I like to use Snippets to avoid typing repeated piece of code.
-
-However, I do not like too much to take a full collection of snippets created by someone else.
-You end up with most of the snippet not used.
-
-However, the collection like [[https://github.com/AndreaCrotti/yasnippet-snippets/][Github/AndreaCrotti/yasnippets-snippets]] can be a good source of inspiration.
-#+BEGIN_SRC emacs-lisp
-  (use-package yasnippet
-    :straight t
-    :config
-    (yas-reload-all)
-    (add-to-list 'yas-snippet-dirs "~/.config/emacs/snippets")
-    (yas-global-mode 1))
-#+END_SRC
-
-* Theme & Fanciness
-#+BEGIN_SRC emacs-lisp
-  ;; NOTE: The first time that this configuration is loaded
-  ;; You'll need to run those commands manually:
-  ;; M-x all-the-icons-install-fonts
-  (use-package all-the-icons
-    :straight t)
-
-  ;; Enable cool icons in dired
-  (use-package all-the-icons-dired
-    :straight t
-    :ensure t
-    :hook
-    (dired-mode . all-the-icons-dired-mode)
-    )
-
-  ;; Enable cool icons in ivy
-  (use-package all-the-icons-ivy
-    :straight t
-    :ensure t
-    :init
-    (all-the-icons-ivy-setup))
-
-  (use-package doom-themes
-    :straight t
-    :ensure t
-    :config
-    ;; Global settings (defaults)
-    (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-	  doom-themes-enable-italic t) ; if nil, italics is universally disabled
-    (load-theme 'doom-palenight t)
-
-    ;; Enable flashing mode-line on errors
-    (doom-themes-visual-bell-config)
-    ;; Corrects (and improves) org-mode's native fontification.
-    (doom-themes-org-config))
-
-  ;; Prettier Mode line
-  (use-package doom-modeline
-    :straight t
-    :ensure t
-    :init (doom-modeline-mode 1))
-  (use-package rainbow-delimiters
-    :straight t
-    :hook (prog-mode . rainbow-delimiters-mode))
-#+END_SRC
 * Shortcuts
 ** [[https://github.com/justbur/emacs-which-key][Which-key]]
 Which-key is a Emacs Minor mode that I particularly like. It displays the key bindings based on the current key that you pressed.
@@ -280,6 +144,157 @@ I use it a lot to mimic the shortcut of [[https://github.com/syl20bnr/spacemacs]
       "z"  '(hydra-text-scale/body :which-key "zoom")))
 #+END_SRC
 *** TODO Split the general configuration into mutliple pieces
+* Completion
+** vertico
+#+BEGIN_SRC emacs-lisp
+  (use-package vertico
+    :straight t
+    :init
+    (vertico-mode))
+#+END_SRC
+** [[https://github.com/oantolin/orderless][orderless package]]
+#+BEGIN_SRC emacs-lisp
+  (use-package orderless
+    :straight t
+    :ensure t
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles basic partial-completion)))))
+#+END_SRC
+** [[https://github.com/minad/marginalia][marginalia]]
+Add some annotations/notes in the minibuffer completion
+#+BEGIN_SRC emacs-lisp
+  (use-package marginalia
+    :straight t
+    ;; Either bind `marginalia-cycle' globally or only in the minibuffer
+    :bind (("M-A" . marginalia-cycle)
+	   :map minibuffer-local-map
+	   ("M-A" . marginalia-cycle))
+    :init
+    (marginalia-mode))
+#+END_SRC
+** [[https://github.com/minad/consult/][consult.el]]
+*** General conf
+#+BEGIN_SRC emacs-lisp
+  (use-package consult
+    :straight t
+    :bind (;; C-c bindings (mode-specific-map)
+	   ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+	   ;; Other custom bindings
+	   ("C-s" . consult-line)
+	   ("M-y" . consult-yank-pop))
+
+    ;; Enable automatic preview at point in the *Completions* buffer. This is
+    ;; relevant when you use the default completion UI.
+    :hook (completion-list-mode . consult-preview-at-point-mode)
+
+    ;; The :init configuration is always executed (Not lazy)
+    :init
+    ;; Optionally configure the register formatting. This improves the register
+    ;; preview for `consult-register', `consult-register-load',
+    ;; `consult-register-store' and the Emacs built-ins.
+    (setq register-preview-delay 0.5
+	  register-preview-function #'consult-register-format)
+
+    ;; Optionally tweak the register preview window.
+    ;; This adds thin lines, sorting and hides the mode line of the window.
+    (advice-add #'register-preview :override #'consult-register-window)
+
+    ;; Use Consult to select xref locations with preview
+    (setq xref-show-xrefs-function #'consult-xref
+	  xref-show-definitions-function #'consult-xref)
+
+    ;; Configure other variables and modes in the :config section,
+    ;; after lazily loading the package.
+    :config
+    (consult-customize
+     consult-theme :preview-key '(:debounce 0.2 any)
+     consult-ripgrep consult-git-grep consult-grep
+     consult-bookmark consult-recent-file consult-xref
+     consult--source-bookmark consult--source-file-register
+     consult--source-recent-file consult--source-project-recent-file
+     ;; :preview-key (kbd "M-.")
+     :preview-key '(:debounce 0.4 any))
+
+    ;; Optionally configure the narrowing key.
+    ;; Both < and C-+ work reasonably well.
+    (setq consult-narrow-key "<"))
+#+END_SRC
+*** [[https://github.com/karthink/consult-dir][consult-dir]]
+#+BEGIN_SRC emacs-lisp
+  (use-package consult-dir
+    :straight t
+    :ensure t
+    :bind (("C-x C-d" . consult-dir)
+	   :map vertico-map
+	   ("C-x C-d" . consult-dir)
+	   ("C-x C-j" . consult-dir-jump-file)))
+  (require 'general)
+  (morsicus/leader-keys
+      "d" '(consult-dir :which-key "consult-dir"))
+#+END_SRC
+* Snippets
+I like to use Snippets to avoid typing repeated piece of code.
+
+However, I do not like too much to take a full collection of snippets created by someone else.
+You end up with most of the snippet not used.
+
+However, the collection like [[https://github.com/AndreaCrotti/yasnippet-snippets/][Github/AndreaCrotti/yasnippets-snippets]] can be a good source of inspiration.
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :straight t
+    :config
+    (yas-reload-all)
+    (add-to-list 'yas-snippet-dirs "~/.config/emacs/snippets")
+    (yas-global-mode 1))
+#+END_SRC
+
+* Theme & Fanciness
+#+BEGIN_SRC emacs-lisp
+  ;; NOTE: The first time that this configuration is loaded
+  ;; You'll need to run those commands manually:
+  ;; M-x all-the-icons-install-fonts
+  (use-package all-the-icons
+    :straight t)
+
+  ;; Enable cool icons in dired
+  (use-package all-the-icons-dired
+    :straight t
+    :ensure t
+    :hook
+    (dired-mode . all-the-icons-dired-mode)
+    )
+
+  ;; Enable cool icons in ivy
+  (use-package all-the-icons-ivy
+    :straight t
+    :ensure t
+    :init
+    (all-the-icons-ivy-setup))
+
+  (use-package doom-themes
+    :straight t
+    :ensure t
+    :config
+    ;; Global settings (defaults)
+    (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+	  doom-themes-enable-italic t) ; if nil, italics is universally disabled
+    (load-theme 'doom-palenight t)
+
+    ;; Enable flashing mode-line on errors
+    (doom-themes-visual-bell-config)
+    ;; Corrects (and improves) org-mode's native fontification.
+    (doom-themes-org-config))
+
+  ;; Prettier Mode line
+  (use-package doom-modeline
+    :straight t
+    :ensure t
+    :init (doom-modeline-mode 1))
+  (use-package rainbow-delimiters
+    :straight t
+    :hook (prog-mode . rainbow-delimiters-mode))
+#+END_SRC
 * Buffers and Windows
 ** Buffers
 *** Shortcuts
