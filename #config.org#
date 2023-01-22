@@ -455,11 +455,10 @@ If we try to sum-up quickly, what I want to achieve with org-mode are the follow
       "on"  '(:ignore t :which-key "org-notes")
       "ona"  '(org-roam-alias-add :which-key "roam-alias")
       "onc"  '(org-roam-capture :which-key "roam-capture")
-      "onl"  '(org-roam-buffer-toggle :which-key "roam-list")
-      "onf"  '(org-roam-node-find :which-key "roam-find")
-      "ont"  '(org-roam-tag-add :which-key "roam-tag")
-      "ons"  '(morsicus/org-roam-rg-search :which-key "morsicus/org-roam-rg-search"))
-      "oni"  '(morsicus/org-roam-node-insert :which-key "roam-insert")
+      "onl"   '(org-roam-buffer-toggle :which-key "roam-list")
+      "onf"   '(org-roam-node-find :which-key "roam-find")
+      "onf"   '(org-roam-tag-add :which-key "roam-tag")
+      "oni"   '(morsicus/org-roam-node-insert :which-key "roam-insert")
       "oo"  '(org-open-at-point :which-key "open"))
     :config
     (require 'org-roam-dailies)
@@ -472,6 +471,10 @@ If we try to sum-up quickly, what I want to achieve with org-mode are the follow
     (interactive)
     (let ((consult-ripgrep-command "rg --null --ignore-case --type org --line-buffered --color=always --max-columns=500 --no-heading --line-number . -e ARG OPTS"))
       (consult-ripgrep "~/Documents/Org/Roam")))
+
+  (require 'general)
+  (morsicus/leader-keys
+    "ons" '(morsicus/org-roam-rg-search :which-key "morsicus/org-roam-rg-search"))
 #+END_SRC
 *** Custom function to fix the org-roam-node-insert in Evil mode
 When using org-roam-node-insert function provided by org-roam with Evil in Normal mode I cannot smoothly create a new node in the current note.
