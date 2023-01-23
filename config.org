@@ -458,7 +458,7 @@ If we try to sum-up quickly, what I want to achieve with org-mode are the follow
       "onl"  '(org-roam-buffer-toggle :which-key "roam-list")
       "onf"  '(org-roam-node-find :which-key "roam-find")
       "ont"  '(org-roam-tag-add :which-key "roam-tag")
-      "ons"  '(morsicus/org-roam-rg-search :which-key "morsicus/org-roam-rg-search"))
+      "ons"  '(morsicus/org-roam-rg-search :which-key "morsicus/org-roam-rg-search")
       "oni"  '(morsicus/org-roam-node-insert :which-key "roam-insert")
       "oo"  '(org-open-at-point :which-key "open"))
     :config
