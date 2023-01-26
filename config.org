@@ -431,7 +431,18 @@ If we try to sum-up quickly, what I want to achieve with org-mode are the follow
     :straight t
     :config
     (setq org-agenda-files
-	  '("~/Documents/Org/Roam/daily"))
+	  '("~/Documents/Org/Roam/20230122104808-inbox.org"))
+    (setq org-agenda-custom-commands
+	  '((" " "My Daily Agenda"
+	     ((agenda ""
+		      ((org-agenda-span 'day)))
+	      (todo "TODO"
+		    ((org-agenda-overriding-header "Unscheduled Tasks")
+		     (org-agenda-files '("~/Documents/Org/Roam/20230122104808-inbox.org"))
+		     (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled 'deadline))))))))
+    (setq org-capture-templates
+	  '(("t" "Todo" entry (file+headline "~/Documents/Org/Roam/20230122104808-inbox.org" "Tasks to refile")
+	     "* TODO %?\n  %i\n  %a")))
     (setq org-log-done 'time))
 #+END_SRC
 ** [[https://www.orgroam.com/][org-roam]]
@@ -447,20 +458,22 @@ If we try to sum-up quickly, what I want to achieve with org-mode are the follow
     :general
     (morsicus/leader-keys
       "o"   '(:ignore t :which-key "org")
+      "oa"   '(org-agenda :which-key "org-agenda")
       "ot"  '(:ignore t :which-key "org-task")
       "otd"  '(org-deadline :which-key "org-deadline")
       "ots"  '(org-schedule :which-key "org-schedule")
       "otl"  '(org-todo-list :which-key "org-todo-list")
-      "otc"  '(org-roam-dailies-capture-today :which-key "org-todo-capture")
+      "otc"  '(org-capture :which-key "org-todo-capture")
+      "otp"  '(org-priority :which-key "org-priority")
       "on"  '(:ignore t :which-key "org-notes")
       "ona"  '(org-roam-alias-add :which-key "roam-alias")
       "onc"  '(org-roam-capture :which-key "roam-capture")
       "onl"  '(org-roam-buffer-toggle :which-key "roam-list")
+      "ono"  '(org-open-at-point :which-key "org-open")
       "onf"  '(org-roam-node-find :which-key "roam-find")
       "ont"  '(org-roam-tag-add :which-key "roam-tag")
       "ons"  '(morsicus/org-roam-rg-search :which-key "morsicus/org-roam-rg-search")
-      "oni"  '(morsicus/org-roam-node-insert :which-key "roam-insert")
-      "oo"  '(org-open-at-point :which-key "open"))
+      "oni"  '(morsicus/org-roam-node-insert :which-key "roam-insert"))
     :config
     (require 'org-roam-dailies)
     (org-roam-setup))
