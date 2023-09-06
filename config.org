@@ -235,17 +235,104 @@ I use it a lot to mimic the shortcut of [[https://github.com/syl20bnr/spacemacs]
     "wD" '(delete-other-windows :which-key "delete"))
 #+END_SRC
 * Minibuffer improvements
-** Vertico
-[[https://github.com/minad/vertico][Vertico]] is a minimalistic vertical completion UI. I chose this one over other alternatives
+** [[https://github.com/minad/vertico][Vertico]]
+Vertico is a minimalistic vertical completion UI. I chose this one over other alternatives
 because it seems to be simple (~600 LOC)
 
-Also the author (ie. Daniel Mendler) seems to a highly known package developer (and really serious one)
+Also the author (ie. Daniel Mendler) seems to be a highly known package developer (and really serious one)
 just watch at the quality of the documentation!
 
-#+BEGIN_SRC emacs-lisp
-  (use-package vertico
-    :init
-    (vertico-mode))
+#+BEGIN_SRC emacs-lisp	
+  (use-package vertico	
+    :straight t	
+    :init	
+    (vertico-mode))	
+#+END_SRC	
+
+** [[https://github.com/oantolin/orderless][orderless package]]	
+#+BEGIN_SRC emacs-lisp	
+  (use-package orderless	
+    :straight t	
+    :ensure t	
+    :custom	
+    (completion-styles '(orderless basic))	
+    (completion-category-overrides '((file (styles basic partial-completion)))))	
+#+END_SRC	
+
+** [[https://github.com/minad/marginalia][marginalia]]	
+Add some annotations/notes in the minibuffer completion	
+
+#+BEGIN_SRC emacs-lisp	
+  (use-package marginalia	
+    :straight t	
+    ;; Either bind `marginalia-cycle' globally or only in the minibuffer	
+    :bind (("M-A" . marginalia-cycle)	
+	   :map minibuffer-local-map	
+	   ("M-A" . marginalia-cycle))	
+    :init	
+    (marginalia-mode))	
+#+END_SRC	
+
+** [[https://github.com/minad/consult/][consult.el]]	
+*** General conf	
+#+BEGIN_SRC emacs-lisp	
+  (use-package consult	
+    :straight t	
+    :bind (;; C-c bindings (mode-specific-map)	
+	   ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer	
+	   ;; Other custom bindings	
+	   ("C-s" . consult-line)	
+	   ("M-y" . consult-yank-pop))	
+
+    ;; Enable automatic preview at point in the *Completions* buffer. This is	
+    ;; relevant when you use the default completion UI.	
+    :hook (completion-list-mode . consult-preview-at-point-mode)	
+
+    ;; The :init configuration is always executed (Not lazy)	
+    :init	
+    ;; Optionally configure the register formatting. This improves the register	
+    ;; preview for `consult-register', `consult-register-load',	
+    ;; `consult-register-store' and the Emacs built-ins.	
+    (setq register-preview-delay 0.5	
+	  register-preview-function #'consult-register-format)	
+
+    ;; Optionally tweak the register preview window.	
+    ;; This adds thin lines, sorting and hides the mode line of the window.	
+    (advice-add #'register-preview :override #'consult-register-window)	
+
+    ;; Use Consult to select xref locations with preview	
+    (setq xref-show-xrefs-function #'consult-xref	
+	  xref-show-definitions-function #'consult-xref)	
+
+    ;; Configure other variables and modes in the :config section,	
+    ;; after lazily loading the package.	
+    :config	
+    (consult-customize	
+     consult-theme :preview-key '(:debounce 0.2 any)	
+     consult-ripgrep consult-git-grep consult-grep	
+     consult-bookmark consult-recent-file consult-xref	
+     consult--source-bookmark consult--source-file-register	
+     consult--source-recent-file consult--source-project-recent-file	
+     ;; :preview-key (kbd "M-.")	
+     :preview-key '(:debounce 0.4 any))	
+
+    ;; Optionally configure the narrowing key.	
+    ;; Both < and C-+ work reasonably well.	
+    (setq consult-narrow-key "<"))	
+#+END_SRC	
+
+*** [[https://github.com/karthink/consult-dir][consult-dir]]	
+#+BEGIN_SRC emacs-lisp	
+  (use-package consult-dir	
+    :straight t	
+    :ensure t	
+    :bind (("C-x C-d" . consult-dir)	
+	   :map vertico-map	
+	   ("C-x C-d" . consult-dir)	
+	   ("C-x C-j" . consult-dir-jump-file)))	
+  (require 'general)	
+  (morsicus/leader-keys	
+      "d" '(consult-dir :which-key "consult-dir"))	
 #+END_SRC
 
 ** Savehist
