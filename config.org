@@ -229,8 +229,8 @@ I use it a lot to mimic the shortcut of [[https://github.com/syl20bnr/spacemacs]
   (require 'general)
   (morsicus/leader-keys
     "w"  '(:ignore t :which-key "windows")
-    "w/" '(split-window-vertically :which-key "vsplit")
-    "w-" '(split-window-horizontally :which-key "split")
+    "w-" '(split-window-vertically :which-key "vsplit")
+    "w/" '(split-window-horizontally :which-key "split")
     "wd" '(delete-window :which-key "delete")
     "wD" '(delete-other-windows :which-key "delete"))
 #+END_SRC
