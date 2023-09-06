@@ -234,6 +234,30 @@ I use it a lot to mimic the shortcut of [[https://github.com/syl20bnr/spacemacs]
     "wd" '(delete-window :which-key "delete")
     "wD" '(delete-other-windows :which-key "delete"))
 #+END_SRC
+* Minibuffer improvements
+** Vertico
+[[https://github.com/minad/vertico][Vertico]] is a minimalistic vertical completion UI. I chose this one over other alternatives
+because it seems to be simple (~600 LOC)
+
+Also the author (ie. Daniel Mendler) seems to a highly known package developer (and really serious one)
+just watch at the quality of the documentation!
+
+#+BEGIN_SRC emacs-lisp
+  (use-package vertico
+    :init
+    (vertico-mode))
+#+END_SRC
+
+** Savehist
+Savehist is a package saving emacs history over Emacs restarts.
+Vertico package uses it to sort completion candidates in the minibuffer
+
+#+BEGIN_SRC emacs-lisp
+  (use-package savehist
+    :init
+    (savehist-mode))
+#+END_SRC
+
 * Development
 ** Basis
 #+BEGIN_SRC emacs-lisp
